@@ -1,8 +1,9 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {Image, StyleSheet, Text} from 'react-native';
+import {ImageBackground, StyleSheet, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import AdminScreen from '../screens/admin/AdminScreen';
+import tw from 'tailwind-react-native-classnames';
+import AdminNavigator from '../screens/admin/AdminNavigator';
 import ExploreScreen from '../screens/explore/ExploreScreen';
 import profileScreen from '../screens/profile/ProfileScreen';
 import ReservationsScreen from '../screens/reservations/ReservationsScreen';
@@ -13,7 +14,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+        tabBarIcon: ({focused, color}) => {
           let iconName: string = '';
 
           if (route.name === 'Explore') {
@@ -26,7 +27,7 @@ const Tabs = () => {
             iconName = focused ? 'person-circle' : 'person-circle-outline';
           }
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return <Icon name={iconName} size={26} color={color} />;
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
@@ -38,12 +39,24 @@ const Tabs = () => {
         tabBarHideOnKeyboard: true,
         headerRight: () => {
           return (
-            <Image source={require('./assets/images/Explore_logo_small.png')} />
+            <ImageBackground
+              source={require('../assets/images/Explore_logo_small_black.png')}
+              resizeMode="center"
+              style={tw`relative w-32 h-3/4 top-1`}
+            />
           );
         },
       })}>
-      <Tab.Screen name="Explore" component={ExploreScreen} />
-      <Tab.Screen name="Admin" component={AdminScreen} />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreScreen}
+        options={{headerShown: false}}
+      />
+      <Tab.Screen
+        name="Admin"
+        component={AdminNavigator}
+        options={{headerShown: false}}
+      />
       <Tab.Screen name="Mes Reservations" component={ReservationsScreen} />
       <Tab.Screen name="Profil" component={profileScreen} />
     </Tab.Navigator>

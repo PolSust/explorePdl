@@ -1,8 +1,9 @@
 import axios from 'axios';
 import React, {useState} from 'react';
 import {Searchbar} from 'react-native-paper';
+import tw from 'tailwind-react-native-classnames';
 
-const SearchHotels = () => {
+const SearchHotels = ({style = tw`rounded-full`, inputStyle = tw`text-lg`}) => {
   const [query, setQuery] = useState('');
 
   const onQueryChange = async (text: string) => {
@@ -26,6 +27,8 @@ const SearchHotels = () => {
       placeholder={'Département, ville...'}
       value={query}
       onChangeText={onQueryChange}
+      style={style}
+      inputStyle={inputStyle}
     />
   );
 };
