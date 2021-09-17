@@ -1,5 +1,5 @@
 import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import AdminScreen from './AdminScreen';
 import HotelForm from './HotelForm';
 
@@ -9,7 +9,11 @@ const AdminNavigator = () => {
   return (
     <Stack.Navigator initialRouteName="AdminScreen">
       <Stack.Screen name="AdminScreen" component={AdminScreen} />
-      <Stack.Screen name="HotelForm" component={HotelForm} />
+      <Stack.Screen
+        name="HotelForm"
+        options={{ title: "Formulaire d'Hotel" }}
+        component={HotelForm}
+      />
     </Stack.Navigator>
   );
 };

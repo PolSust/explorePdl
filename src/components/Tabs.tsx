@@ -1,6 +1,6 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {ImageBackground, StyleSheet, Text} from 'react-native';
+import { ImageBackground, StyleSheet, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
 import AdminNavigator from '../screens/admin/AdminNavigator';
@@ -13,8 +13,8 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color }) => {
           let iconName: string = '';
 
           if (route.name === 'Explore') {
@@ -29,9 +29,9 @@ const Tabs = () => {
 
           return <Icon name={iconName} size={26} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-        tabBarLabel: ({focused}) => {
+        tabBarActiveTintColor: '#69A2B0',
+        tabBarInactiveTintColor: '#CEDEF3',
+        tabBarLabel: ({ focused }) => {
           let labelTxt = focused ? route.name : ' ';
 
           return <Text style={s.label}>{labelTxt}</Text>;
@@ -50,12 +50,12 @@ const Tabs = () => {
       <Tab.Screen
         name="Explore"
         component={ExploreScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Tab.Screen
         name="Admin"
         component={AdminNavigator}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Tab.Screen name="Mes Reservations" component={ReservationsScreen} />
       <Tab.Screen name="Profil" component={profileScreen} />
