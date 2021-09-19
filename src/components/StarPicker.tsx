@@ -12,8 +12,6 @@ const StarPicker = ({ inputRating }) => {
       areFilled.push(true);
     }
     setFilled(areFilled);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rating]);
 
   return (

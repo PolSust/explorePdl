@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import { ImageBackground, StyleSheet, Text } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
 import AdminNavigator from '../screens/admin/AdminNavigator';
@@ -33,8 +34,9 @@ const Tabs = () => {
         tabBarInactiveTintColor: '#CEDEF3',
         tabBarLabel: ({ focused }) => {
           let labelTxt = focused ? route.name : ' ';
+          let labelStyle = focused ? s.labelActive : s.label;
 
-          return <Text style={s.label}>{labelTxt}</Text>;
+          return <Text style={labelStyle}>{labelTxt}</Text>;
         },
         tabBarHideOnKeyboard: true,
         headerRight: () => {
@@ -66,6 +68,10 @@ const Tabs = () => {
 const s = StyleSheet.create({
   label: {
     fontSize: 10,
+  },
+  labelActive: {
+    fontSize: 10,
+    color: '#69A2B0',
   },
 });
 
