@@ -1,13 +1,16 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
-import uuid from 'react-native-uuid';
+import AutocompletionProps from '../interfaces/AutocompletionProps';
+import AutocompletionBase from './AutocompletionBase';
 
-const DepartmentAutocomplete = ({ inputQuery }) => {
-  const [departments, setDepartments] = useState([{ nom: '' }]);
+const DepartmentAutocompletion: FC<AutocompletionProps> = ({
+  inputQuery,
+  onAutocompleteItemPress,
+}) => {
+  const [departments, setDepartments] = useState([{}]);
   const [query, setQuery] = useState('');
 
   useEffect(() => {
@@ -26,17 +29,20 @@ const DepartmentAutocomplete = ({ inputQuery }) => {
       );
 
       if (query.length == 0) filteredDepartments = [];
+      console.log(filteredDepartments);
 
       setDepartments(filteredDepartments);
-      console.log(filteredDepartments);
     };
     fetchDepartments();
   }, [query]);
 
-  const AutoCompleteItem = ({ item }) => (
+  const AutoCompleteItem = (
+    { item }: any,
+    onPress: AutocompletionProps['onAutocompleteItemPress'],
+  ) => (
     <TouchableRipple
       onPress={() => {
-        return;
+        onPress(item.nom, item.code);
       }}
       rippleColor="#8a8a8a"
       style={tw`pt-4 pl-3`}>
@@ -45,11 +51,9 @@ const DepartmentAutocomplete = ({ inputQuery }) => {
   );
 
   return (
-    <FlatList
-      style={tw`bg-gray-200`}
+    <AutocompletionBase
       data={departments}
-      renderItem={AutoCompleteItem}
-      keyExtractor={() => uuid.v4().toString()}
+      renderItem={(item) => AutoCompleteItem(item, onAutocompleteItemPress)}
     />
   );
 };
@@ -63,4 +67,4 @@ const s = StyleSheet.create({
   },
 });
 
-export default DepartmentAutocomplete;
+export default DepartmentAutocompletion;

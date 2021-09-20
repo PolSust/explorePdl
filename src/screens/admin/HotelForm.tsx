@@ -3,13 +3,16 @@ import { ScrollView, View } from 'react-native';
 import { TextInput, Title } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import CategorySelector from '../../components/CategorySelector';
-import DepartmentAutocomplete from '../../components/DepartmentAutocomplete';
+import DepartmentAutocompletion from '../../components/DepartmentAutocompletion';
 import StarPicker from '../../components/StarPicker';
 import Hotel from '../../interfaces/Hotel';
 
 const HotelForm = (hotelInput: Hotel) => {
   const [hotel, setHotel] = useState(hotelInput);
   const [departmentFilled, setDepartmentFilled] = useState<boolean>(false);
+  const [showdepAutocompletion, setShowdepAutocompletion] =
+    useState<boolean>(false);
+  const [codeDepartment, setCodeDepartment] = useState<number | string>();
 
   useEffect(() => {
     console.log(hotel.department);
@@ -37,12 +40,22 @@ const HotelForm = (hotelInput: Hotel) => {
             label="Département"
             autoCompleteType="off"
             value={hotel.department}
+            onFocus={() => setShowdepAutocompletion(true)}
             onChangeText={(department) => setHotel({ ...hotel, department })}
             onBlur={() => {
               if (hotel.department) setDepartmentFilled(true);
             }}
           />
-          <DepartmentAutocomplete inputQuery={hotel.department} />
+          {showdepAutocompletion && (
+            <DepartmentAutocompletion
+              onAutocompleteItemPress={(nom, codeDepartment) => {
+                setHotel({ ...hotel, department: nom });
+                setCodeDepartment(codeDepartment);
+                setShowdepAutocompletion(false);
+              }}
+              inputQuery={hotel.department}
+            />
+          )}
         </View>
         {departmentFilled && (
           <TextInput
