@@ -8,7 +8,7 @@ import AutocompletionBase from './AutocompletionBase';
 
 const DepartmentAutocompletion: FC<AutocompletionProps> = ({
   inputQuery,
-  onAutocompleteItemPress,
+  onAutocompletionItemPress,
 }) => {
   const [departments, setDepartments] = useState([{}]);
   const [query, setQuery] = useState('');
@@ -36,9 +36,9 @@ const DepartmentAutocompletion: FC<AutocompletionProps> = ({
     fetchDepartments();
   }, [query]);
 
-  const AutoCompleteItem = (
+  const AutocompletionItem = (
     { item }: any,
-    onPress: AutocompletionProps['onAutocompleteItemPress'],
+    onPress: AutocompletionProps['onAutocompletionItemPress'],
   ) => (
     <TouchableRipple
       onPress={() => {
@@ -53,7 +53,7 @@ const DepartmentAutocompletion: FC<AutocompletionProps> = ({
   return (
     <AutocompletionBase
       data={departments}
-      renderItem={(item) => AutoCompleteItem(item, onAutocompleteItemPress)}
+      renderItem={(item) => AutocompletionItem(item, onAutocompletionItemPress)}
     />
   );
 };

@@ -3,7 +3,7 @@ interface AutocompletionProps {
   /**
    * Callback function called when an autocompletition item is pressed
    */
-  onAutocompleteItemPress: (
+  onAutocompletionItemPress: (
     nom: string,
     codeDepartment?: number | string,
   ) => void;
