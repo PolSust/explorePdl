@@ -1,19 +1,22 @@
 export default interface Hotel {
   id?: number | string;
-  name: string;
+  name: string | undefined;
   /**
    * The number references a category
    */
-  category: number;
-  city: string;
-  department: string;
+  category: number | undefined;
+  city: string | undefined;
+  /**
+   * The number references a the department code
+   */
+  department: string | undefined;
   /**
    * The rating of the hotel
    */
-  stars: number;
-  description: string;
+  stars: number | undefined;
+  description: string | undefined;
   /**
-   * The path to the image
+   * Base64 encoded image
    */
-  picture: string;
+  picture: string | undefined;
 }

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
+import HotelsList from '../../components/HotelsList';
 import SearchHotels from '../../components/SearchHotels';
 
 const AdminScreen = ({ navigation: { navigate } }) => {
@@ -16,11 +17,12 @@ const AdminScreen = ({ navigation: { navigate } }) => {
         <Button
           mode="contained"
           onPress={() => {
-            navigate('HotelForm');
+            navigate('HotelForm', 'prop');
           }}>
           <Icon name={'add-circle'} size={30} />
         </Button>
       </View>
+      <HotelsList style={tw`p-10`} />
     </View>
   );
 };

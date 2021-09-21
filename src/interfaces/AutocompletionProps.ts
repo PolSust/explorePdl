@@ -1,5 +1,5 @@
 interface AutocompletionProps {
-  inputQuery: string;
+  inputQuery: string | undefined;
   /**
    * Callback function called when an autocompletition item is pressed
    */

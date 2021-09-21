@@ -9,8 +9,13 @@ import uuid from 'react-native-uuid';
 const HotelCard = (hotel: Hotel) => {
   return (
     <Card style={tw`w-11/12 my-1`}>
-      <Card.Title title={hotel.name} />
-      <Avatar.Image size={24} source={require(hotel.picture)} />
+      <View style={tw`flex flex-row p-4 justify-between items-center`}>
+        <Title>{hotel.name}</Title>
+        <Avatar.Image
+          size={50}
+          source={{ uri: `data:image/jpeg;base64,${hotel.picture}` }}
+        />
+      </View>
       <View style={tw`flex flex-row`}>
         <StarPicker inputRating={hotel.stars} disabled />
       </View>

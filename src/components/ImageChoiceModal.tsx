@@ -1,25 +1,103 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Portal, Text, Button, Provider } from 'react-native-paper';
+import React, { useState } from 'react';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {
+  Modal,
+  Portal,
+  Button,
+  Provider,
+  Title,
+  Dialog,
+  Paragraph,
+} from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 
-const ImageChoiceModal = ({ showModal }) => {
-  // const [visible, setVisible] = useState(showModal);
+interface props {
+  /**
+   * Callback sends the image on base64
+   */
+  callback: (image: string) => void;
+}
 
-  // useEffect(() => {
-  //   console.log(showModal);
-  // }, [showModal]);
+const ImageChoiceModal = ({ callback }: props) => {
+  const [visible, setVisible] = useState<boolean>(false);
 
   return (
-    <Provider>
-      <Portal>
-        <Modal
-          visible={showModal}
-          onDismiss={() => setVisible(false)}
-          contentContainerStyle={tw`p-20 bg-white`}>
-          <Text>Example Modal. Click outside this area to dismiss.</Text>
-        </Modal>
-      </Portal>
-    </Provider>
+    <>
+      <Button
+        style={tw`w-6/12 m-auto mt-5`}
+        icon="camera"
+        mode="contained"
+        onPress={() => {
+          setVisible(true);
+        }}>
+        Image
+      </Button>
+      <Provider>
+        <Portal>
+          <Dialog
+            style={tw`flex items-center`}
+            visible={visible}
+            onDismiss={() => {
+              setVisible(false);
+            }}>
+            <Dialog.Title>Sélectionner une option :</Dialog.Title>
+            <Dialog.Actions>
+              <Button
+                style={tw`mx-1`}
+                icon="camera"
+                color="#69A2B0"
+                mode="outlined"
+                onPress={() => {
+                  launchCamera(
+                    {
+                      mediaType: 'photo',
+                      saveToPhotos: false,
+                      includeBase64: true,
+                    },
+                    async (image) => {
+                      if (
+                        !image.assets ||
+                        !image.assets[0].uri ||
+                        !image.assets[0].base64
+                      )
+                        return;
+
+                      callback(image.assets[0].base64);
+                    },
+                  );
+                }}>
+                Camera
+              </Button>
+              <Button
+                style={tw`mx-1`}
+                icon="image"
+                color="#69A2B0"
+                mode="outlined"
+                onPress={() => {
+                  launchImageLibrary(
+                    {
+                      mediaType: 'photo',
+                      includeBase64: true,
+                    },
+                    async (image) => {
+                      if (
+                        !image.assets ||
+                        !image.assets[0].uri ||
+                        !image.assets[0].base64
+                      )
+                        return;
+
+                      callback(image.assets[0].base64);
+                    },
+                  );
+                }}>
+                Gallerie
+              </Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
+      </Provider>
+    </>
   );
 };
 

@@ -9,5 +9,5 @@ export default interface Reservation {
   /**
    * foreign key
    */
-  hotel_id: string;
+  id_hotel: string;
 }

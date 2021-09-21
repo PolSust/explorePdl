@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ScrollView, View } from 'react-native';
-import { Button, Text, TextInput, Title } from 'react-native-paper';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { Image, ScrollView, View } from 'react-native';
+import { Button, TextInput, Title } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import CategorySelector from '../../components/CategorySelector';
 import CityAutocompletion from '../../components/CityAutocompletion';
@@ -10,10 +9,14 @@ import StarPicker from '../../components/StarPicker';
 import Hotel from '../../interfaces/Hotel';
 import ImageChoiceModal from '../../components/ImageChoiceModal';
 
-const HotelForm = (hotelInput: Hotel) => {
-  const [hotel, setHotel] = useState(hotelInput);
+const HotelForm = (routes, hotelInput: Hotel) => {
+  // If the id is undefined it means we are creating a new hotel
+  if (!hotelInput.id) {
+    hotelInput = createNullHotel();
+  }
+  const [hotel, setHotel] = useState<Hotel>(hotelInput);
   const [departmentFilled, setDepartmentFilled] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState(false);
+  const [formValid, setFormValid] = useState<boolean>(false);
 
   const [showdepAutocompletion, setShowdepAutocompletion] =
     useState<boolean>(false);
@@ -24,7 +27,15 @@ const HotelForm = (hotelInput: Hotel) => {
   const [codeDepartment, setCodeDepartment] = useState<number | string>();
 
   useEffect(() => {
-    console.log(hotel.department);
+    let isFormValid = true;
+
+    for (const key in hotel) {
+      if ((hotel[key] == null || hotel[key] == '') && key != 'id') {
+        isFormValid = false;
+      }
+    }
+    setFormValid(isFormValid);
+    console.log(hotel);
   }, [hotel]);
 
   return (
@@ -39,7 +50,13 @@ const HotelForm = (hotelInput: Hotel) => {
         />
 
         <View style={tw`flex flex-row justify-center`}>
-          <StarPicker inputRating={hotel.stars} />
+          <StarPicker
+            inputRating={hotel.stars}
+            disabled={false}
+            callback={(rating) => {
+              setHotel({ ...hotel, stars: rating });
+            }}
+          />
         </View>
 
         <TextInput
@@ -54,22 +71,28 @@ const HotelForm = (hotelInput: Hotel) => {
 
         <View style={tw`w-full`}>
           <Title style={tw`text-center`}>Categorie</Title>
-          <CategorySelector />
+          <CategorySelector
+            defaultCategory={hotel.category}
+            callback={(categoryNum: number) => {
+              setHotel({ ...hotel, category: categoryNum });
+            }}
+          />
         </View>
 
-        <View style={tw`flex items-center m-5`}>
-          <Button
-            style={tw`w-6/12`}
-            icon="camera"
-            mode="contained"
-            onPress={() => {
-              setShowModal(true);
-              // launchImageLibrary({ mediaType: 'photo' }, );
-            }}>
-            Image
-          </Button>
-          <ImageChoiceModal showModal={showModal} />
-        </View>
+        <ImageChoiceModal
+          callback={(image64: string) => {
+            setHotel({ ...hotel, picture: image64 });
+          }}
+        />
+        {hotel.picture && (
+          <View style={tw`flex items-center mt-3`}>
+            <Image
+              style={tw`w-60 h-40`}
+              resizeMode="contain"
+              source={{ uri: `data:image/jpeg;base64,${hotel.picture}` }}
+            />
+          </View>
+        )}
 
         <View style={tw`m-5`}>
           <TextInput
@@ -115,9 +138,31 @@ const HotelForm = (hotelInput: Hotel) => {
             )}
           </View>
         )}
+        <View style={tw`flex items-center`}>
+          <Button
+            disabled={!formValid}
+            onPress={() => {}}
+            style={tw`w-1/2 mb-8`}
+            icon="add"
+            mode="contained">
+            Ajouter
+          </Button>
+        </View>
       </View>
     </ScrollView>
   );
+};
+
+const createNullHotel = () => {
+  return {
+    name: undefined,
+    stars: undefined,
+    description: undefined,
+    category: undefined,
+    picture: undefined,
+    department: undefined,
+    city: undefined,
+  };
 };
 
 export default HotelForm;

@@ -5,6 +5,7 @@ import App from './src/App';
 import { name as appName } from './app.json';
 import { NavigationContainer } from '@react-navigation/native';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const theme = {
   ...DefaultTheme,
@@ -18,7 +19,11 @@ const theme = {
 export default function Main() {
   return (
     <NavigationContainer>
-      <PaperProvider theme={theme}>
+      <PaperProvider
+        theme={theme}
+        settings={{
+          icon: (props) => <Icon {...props} />,
+        }}>
         <App />
       </PaperProvider>
     </NavigationContainer>
