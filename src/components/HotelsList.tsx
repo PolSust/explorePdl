@@ -1,12 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
-import { ActivityIndicator, Text } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import Hotel from '../interfaces/Hotel';
 import HotelCard from './HotelCard';
 
-const HotelsList = ({ style }) => {
+const HotelsList = ({ navigation }) => {
   const [hotels, setHotels] = useState<Hotel[] | undefined>();
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
@@ -51,7 +50,7 @@ const HotelsList = ({ style }) => {
         }>
         <View style={tw`flex items-center my-5`}>
           {hotels?.map((hotel: Hotel, i) => (
-            <HotelCard key={i} {...hotel} />
+            <HotelCard key={i} hotel={hotel} navigation={navigation} />
           ))}
         </View>
       </ScrollView>

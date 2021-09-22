@@ -63,6 +63,7 @@ const ImageChoiceModal = ({ callback }: props) => {
                         return;
 
                       callback(image.assets[0].base64);
+                      setVisible(false);
                     },
                   );
                 }}>
@@ -88,6 +89,7 @@ const ImageChoiceModal = ({ callback }: props) => {
                         return;
 
                       callback(image.assets[0].base64);
+                      setVisible(false);
                     },
                   );
                 }}>

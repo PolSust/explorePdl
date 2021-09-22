@@ -18,5 +18,5 @@ export default interface Hotel {
   /**
    * Base64 encoded image
    */
-  picture: string | undefined;
+  picture?: string | undefined;
 }

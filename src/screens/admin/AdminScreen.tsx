@@ -6,7 +6,7 @@ import tw from 'tailwind-react-native-classnames';
 import HotelsList from '../../components/HotelsList';
 import SearchHotels from '../../components/SearchHotels';
 
-const AdminScreen = ({ navigation: { navigate } }) => {
+const AdminScreen = ({ navigation }) => {
   return (
     <View style={tw`flex items-center w-full`}>
       <View style={tw`flex flex-row w-11/12 mt-4`}>
@@ -16,13 +16,11 @@ const AdminScreen = ({ navigation: { navigate } }) => {
         />
         <Button
           mode="contained"
-          onPress={() => {
-            navigate('HotelForm', 'prop');
-          }}>
+          onPress={() => navigation.navigate('HotelForm')}>
           <Icon name={'add-circle'} size={30} />
         </Button>
       </View>
-      <HotelsList style={tw`p-10`} />
+      <HotelsList navigation={navigation} />
     </View>
   );
 };

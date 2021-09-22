@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import { Button, TextInput, Title } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
@@ -8,11 +8,19 @@ import DepartmentAutocompletion from '../../components/DepartmentAutocompletion'
 import StarPicker from '../../components/StarPicker';
 import Hotel from '../../interfaces/Hotel';
 import ImageChoiceModal from '../../components/ImageChoiceModal';
+import axios from 'axios';
+import SnackbarMessageProps from '../../interfaces/SnackbarMessageProps';
+import SnackbarMessageContext from '../../context/SnackbarMessageContext';
+import SnackbarMessageContextInterface from '../../interfaces/SnackbarMessageContext';
+import { useNavigation } from '@react-navigation/core';
 
-const HotelForm = (routes, hotelInput: Hotel) => {
+const HotelForm = ({ route, navigation }) => {
+  let hotelInput: Hotel = route.params;
+  console.log('input', hotelInput);
+
   // If the id is undefined it means we are creating a new hotel
   if (!hotelInput.id) {
-    hotelInput = createNullHotel();
+    hotelInput = createUndefinedHotel();
   }
   const [hotel, setHotel] = useState<Hotel>(hotelInput);
   const [departmentFilled, setDepartmentFilled] = useState<boolean>(false);
@@ -26,6 +34,14 @@ const HotelForm = (routes, hotelInput: Hotel) => {
 
   const [codeDepartment, setCodeDepartment] = useState<number | string>();
 
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
+
+  const { setSnackbarMessage } = useContext<SnackbarMessageContextInterface>(
+    SnackbarMessageContext,
+  );
+
+  const navigator = useNavigation();
+
   useEffect(() => {
     let isFormValid = true;
 
@@ -35,13 +51,43 @@ const HotelForm = (routes, hotelInput: Hotel) => {
       }
     }
     setFormValid(isFormValid);
-    console.log(hotel);
   }, [hotel]);
+
+  const formSubmit = () => {
+    setButtonLoading(true);
+    axios
+      .post(
+        'https://cefii-developpements.fr/pol1149/explorePdlServer/index.php',
+        hotel,
+        {
+          params: {
+            entity: 'hotel',
+            action: 'create',
+          },
+        },
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          setButtonLoading(false);
+          setSnackbarMessage({
+            inputMessage: 'Hotel ajoté avec success !',
+            mode: 'success',
+            setSnackbarMessage,
+          });
+          navigation.goBack();
+        }
+      })
+      .catch((error) => {
+        setButtonLoading(false);
+        console.error(error);
+      });
+  };
 
   return (
     <ScrollView>
       <View style={tw`w-full h-full`}>
         <TextInput
+          mode="outlined"
           style={tw`m-5`}
           label="Nom"
           autoCompleteType="off"
@@ -60,6 +106,7 @@ const HotelForm = (routes, hotelInput: Hotel) => {
         </View>
 
         <TextInput
+          mode="outlined"
           style={tw`m-5`}
           multiline
           numberOfLines={7}
@@ -96,6 +143,7 @@ const HotelForm = (routes, hotelInput: Hotel) => {
 
         <View style={tw`m-5`}>
           <TextInput
+            mode="outlined"
             label="Département"
             autoCompleteType="off"
             value={hotel.department}
@@ -120,6 +168,7 @@ const HotelForm = (routes, hotelInput: Hotel) => {
         {departmentFilled && (
           <View style={tw`m-5`}>
             <TextInput
+              mode="outlined"
               label="Ville"
               autoCompleteType="off"
               value={hotel.city}
@@ -141,7 +190,8 @@ const HotelForm = (routes, hotelInput: Hotel) => {
         <View style={tw`flex items-center`}>
           <Button
             disabled={!formValid}
-            onPress={() => {}}
+            onPress={formSubmit}
+            loading={buttonLoading}
             style={tw`w-1/2 mb-8`}
             icon="add"
             mode="contained">
@@ -153,7 +203,7 @@ const HotelForm = (routes, hotelInput: Hotel) => {
   );
 };
 
-const createNullHotel = () => {
+const createUndefinedHotel = () => {
   return {
     name: undefined,
     stars: undefined,
