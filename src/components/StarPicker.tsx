@@ -7,7 +7,7 @@ interface Props {
   callback?: (rating: number) => void;
 }
 
-const StarPicker = ({ inputRating, disabled, callback }: Props) => {
+const StarPicker = ({ inputRating = 0, disabled, callback }: Props) => {
   const [rating, setRating] = useState(inputRating);
   const [filled, setFilled] = useState([false, false, false, false, false]);
 

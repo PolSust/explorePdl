@@ -25,7 +25,7 @@ const SearchHotels = ({
   itemSelectCallback,
   queryEmptyCallback,
 }: Props) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(defaultValue);
   const [results, setResults] = useState<string[]>([]);
   const [displayAutocompletion, setDisplayAutocompletion] =
     useState<boolean>(false);
@@ -36,9 +36,9 @@ const SearchHotels = ({
     }
   }, [query]);
 
-  useEffect(() => {
-    setQuery(defaultValue);
-  }, [defaultValue]);
+  // useEffect(() => {
+  //   setQuery(defaultValue);
+  // }, [defaultValue]);
 
   const onQueryChange = async (text: string) => {
     setQuery(text);

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import {
+  Button,
   Card,
   Colors,
   IconButton,
@@ -29,10 +30,6 @@ const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
   const { setSnackbarMessage } = useContext<SnackbarMessageContextInterface>(
     SnackbarMessageContext,
   );
-
-  const gotoEdit = () => {
-    navigation.navigate('HotelForm', hotel);
-  };
 
   const deleteHotel = (confirmed: boolean) => {
     if (confirmed) {
@@ -96,7 +93,7 @@ const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
             icon="pencil"
             color={Colors.black}
             size={30}
-            onPress={gotoEdit}
+            onPress={() => navigation.navigate('HotelForm', hotel)}
           />
           <IconButton
             icon="trash"
@@ -108,6 +105,12 @@ const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
           />
         </View>
       </Card.Content>
+      <Button
+        onPress={() => navigation.navigate('HotelReservation', hotel)}
+        mode="contained"
+        style={tw`m-5`}>
+        Réserver
+      </Button>
       <ConfirmModal question={confirmQuestion} callback={deleteHotel} />
     </Card>
   );

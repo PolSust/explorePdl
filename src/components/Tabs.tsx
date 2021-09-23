@@ -1,12 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
-import AdminNavigator from '../screens/admin/AdminNavigator';
 import ExploreNavigator from '../screens/explore/ExploreNavigator';
-import ExploreScreen from '../screens/explore/ExploreScreen';
 import profileScreen from '../screens/profile/ProfileScreen';
 import ReservationsScreen from '../screens/reservations/ReservationsScreen';
 
@@ -53,11 +50,6 @@ const Tabs = () => {
       <Tab.Screen
         name="Explore"
         component={ExploreNavigator}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen
-        name="Admin"
-        component={AdminNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen name="Mes Reservations" component={ReservationsScreen} />

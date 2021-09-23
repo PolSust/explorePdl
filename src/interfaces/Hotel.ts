@@ -6,9 +6,6 @@ export default interface Hotel {
    */
   category: number | undefined;
   city: string | undefined;
-  /**
-   * The number references a the department code
-   */
   department: string | undefined;
   /**
    * The rating of the hotel
