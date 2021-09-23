@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { RefreshControl, SafeAreaView, ScrollView, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import Hotel from '../interfaces/Hotel';
 import HotelCard from './HotelCard';
@@ -37,7 +38,7 @@ const HotelsList = ({ navigation }) => {
   }, [hotels]);
 
   return (
-    <SafeAreaView style={tw`mb-32`}>
+    <SafeAreaView style={tw`mb-40`}>
       <ScrollView
         refreshControl={
           <RefreshControl
@@ -49,8 +50,16 @@ const HotelsList = ({ navigation }) => {
           />
         }>
         <View style={tw`flex items-center my-5`}>
+          {!hotels && <Text>loading...</Text>}
           {hotels?.map((hotel: Hotel, i) => (
-            <HotelCard key={i} hotel={hotel} navigation={navigation} />
+            <HotelCard
+              deleteCallback={(id) => {
+                setHotels(hotels.filter((hotel) => hotel.id !== id));
+              }}
+              key={i}
+              hotel={hotel}
+              navigation={navigation}
+            />
           ))}
         </View>
       </ScrollView>

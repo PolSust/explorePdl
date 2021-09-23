@@ -8,7 +8,11 @@ const AdminNavigator = () => {
 
   return (
     <Stack.Navigator initialRouteName="AdminScreen">
-      <Stack.Screen name="AdminScreen" component={AdminScreen} />
+      <Stack.Screen
+        name="AdminScreen"
+        options={{ title: 'Espace Admin' }}
+        component={AdminScreen}
+      />
       <Stack.Screen
         name="HotelForm"
         options={{ title: "Formulaire d'Hotel" }}

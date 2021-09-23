@@ -1,4 +1,5 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useContext, useState } from 'react';
 import { View } from 'react-native';
 import {
   Card,
@@ -10,30 +11,73 @@ import {
   Title,
 } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
+import SnackbarMessageContext from '../context/SnackbarMessageContext';
 import Hotel from '../interfaces/Hotel';
+import SnackbarMessageContextInterface from '../interfaces/SnackbarMessageContext';
+import ConfirmModal from './ConfirmModal';
 import StarPicker from './StarPicker';
 
 interface Props {
   hotel: Hotel;
   navigation: any;
+  deleteCallback: (id: number | string | undefined) => void;
 }
 
-const HotelCard = ({ hotel, navigation }: Props) => {
+const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
+  const [confirmQuestion, setConfirmQuestion] = useState('');
+
+  const { setSnackbarMessage } = useContext<SnackbarMessageContextInterface>(
+    SnackbarMessageContext,
+  );
+
   const gotoEdit = () => {
     navigation.navigate('HotelForm', hotel);
   };
 
-  const deleteHotel = () => {};
+  const deleteHotel = (confirmed: boolean) => {
+    if (confirmed) {
+      axios
+        .post(
+          'https://cefii-developpements.fr/pol1149/explorePdlServer/index.php',
+          hotel.id,
+          {
+            params: {
+              entity: 'hotel',
+              action: 'delete',
+            },
+          },
+        )
+        .then((response) => {
+          if (response.status == 200) {
+            deleteCallback(hotel.id);
+
+            setSnackbarMessage({
+              inputMessage: 'Hotel supprimé avec success !',
+              mode: 'success',
+              setSnackbarMessage,
+            });
+          }
+        })
+        .catch((error) => {
+          setSnackbarMessage({
+            inputMessage: 'Une erreur est survenue !',
+            mode: 'error',
+            setSnackbarMessage,
+          });
+        });
+    }
+    setConfirmQuestion('');
+  };
 
   return (
-    <Card style={tw`w-11/12 my-1`}>
+    <Card style={tw`w-11/12 my-1 py-4`}>
       <View style={tw`flex flex-row p-4 justify-between items-center`}>
         <Title style={tw`text-2xl`}>{hotel.name}</Title>
         {hotel.category == 1 && <Subheading>Niège</Subheading>}
         {hotel.category == 2 && <Subheading>Plage</Subheading>}
         {hotel.category == 3 && <Subheading>Forêt</Subheading>}
       </View>
-      <View style={tw`pl-5`}>
+      <View style={tw`pl-7`}>
         <Subheading>{hotel.department}</Subheading>
         <Subheading style={{ fontWeight: 'bold' }}>{hotel.city}</Subheading>
       </View>
@@ -47,7 +91,7 @@ const HotelCard = ({ hotel, navigation }: Props) => {
             <Text>...</Text>
           )}
         </Paragraph>
-        <View style={tw`w-2/12 flex items-center`}>
+        <View style={tw`w-2/12 flex items-center justify-center`}>
           <IconButton
             icon="pencil"
             color={Colors.black}
@@ -58,10 +102,13 @@ const HotelCard = ({ hotel, navigation }: Props) => {
             icon="trash"
             color={Colors.red300}
             size={30}
-            onPress={deleteHotel}
+            onPress={() => {
+              setConfirmQuestion('Voulez Vous Supprimer cette Hotel');
+            }}
           />
         </View>
       </Card.Content>
+      <ConfirmModal question={confirmQuestion} callback={deleteHotel} />
     </Card>
   );
 };

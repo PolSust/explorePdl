@@ -3,7 +3,7 @@ import SnackbarMessage from './components/SnackbarMessage';
 import Tabs from './components/Tabs';
 import SnackbarMessageContext from './context/SnackbarMessageContext';
 import SnackbarMessageContextInterface from './interfaces/SnackbarMessageContext';
-import SnackbarMessageProps from './interfaces/SnackbarMessageProps';
+import 'react-native-url-polyfill/auto';
 
 const App = () => {
   const [snackbarMessage, setSnackbarMessage] =
@@ -24,6 +24,13 @@ const App = () => {
       <SnackbarMessage
         inputMessage={snackbarMessage.inputMessage}
         mode={snackbarMessage.mode}
+        dismissCallback={() => {
+          snackbarMessage.setSnackbarMessage({
+            inputMessage: '',
+            mode: 'error',
+            setSnackbarMessage,
+          });
+        }}
       />
     </SnackbarMessageContext.Provider>
   );

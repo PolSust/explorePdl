@@ -18,12 +18,14 @@ const HotelForm = ({ route, navigation }) => {
   let hotelInput: Hotel = route.params;
   console.log('input', hotelInput);
 
-  // If the id is undefined it means we are creating a new hotel
-  if (!hotelInput.id) {
+  // If the hotelProp is undefined it means we are creating a new hotel
+  if (!hotelInput) {
     hotelInput = createUndefinedHotel();
   }
   const [hotel, setHotel] = useState<Hotel>(hotelInput);
-  const [departmentFilled, setDepartmentFilled] = useState<boolean>(false);
+  const [departmentFilled, setDepartmentFilled] = useState<boolean>(
+    !hotel.department ? false : true,
+  );
   const [formValid, setFormValid] = useState<boolean>(false);
 
   const [showdepAutocompletion, setShowdepAutocompletion] =
@@ -39,8 +41,6 @@ const HotelForm = ({ route, navigation }) => {
   const { setSnackbarMessage } = useContext<SnackbarMessageContextInterface>(
     SnackbarMessageContext,
   );
-
-  const navigator = useNavigation();
 
   useEffect(() => {
     let isFormValid = true;
@@ -70,7 +70,7 @@ const HotelForm = ({ route, navigation }) => {
         if (response.status === 200) {
           setButtonLoading(false);
           setSnackbarMessage({
-            inputMessage: 'Hotel ajoté avec success !',
+            inputMessage: 'Hotel ajouté avec success !',
             mode: 'success',
             setSnackbarMessage,
           });

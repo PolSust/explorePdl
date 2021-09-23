@@ -9,7 +9,7 @@ import SearchHotels from '../../components/SearchHotels';
 const AdminScreen = ({ navigation }) => {
   return (
     <View style={tw`flex items-center w-full`}>
-      <View style={tw`flex flex-row w-11/12 mt-4`}>
+      <View style={tw`flex flex-row w-11/12 mt-4 mb-3`}>
         <SearchHotels
           style={tw`w-9/12 mr-3 rounded-full`}
           inputStyle={tw`text-sm`}
