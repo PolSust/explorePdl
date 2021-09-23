@@ -6,34 +6,42 @@ import tw from 'tailwind-react-native-classnames';
 import Hotel from '../interfaces/Hotel';
 import HotelCard from './HotelCard';
 
-const HotelsList = ({ navigation }) => {
-  const [hotels, setHotels] = useState<Hotel[] | undefined>();
+interface Props {
+  navigation: any;
+  hotelsInput: Hotel[];
+}
+
+const HotelsList = ({ navigation, hotelsInput }: Props) => {
+  const [hotels, setHotels] = useState<Hotel[] | undefined>(hotelsInput);
   const [loading, setLoading] = useState<boolean>(true);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    const fetchHotels = async () => {
-      const response = await axios.get(
-        'https://cefii-developpements.fr/pol1149/explorePdlServer',
-        {
-          params: {
-            entity: 'hotel',
-            action: 'getAll',
-          },
+    setHotels(hotelsInput);
+  }, [hotelsInput]);
+
+  const fetchHotels = async () => {
+    const response = await axios.get(
+      'https://cefii-developpements.fr/pol1149/explorePdlServer',
+      {
+        params: {
+          entity: 'hotel',
+          action: 'getAll',
         },
-      );
+      },
+    );
 
-      setHotels(response.data);
-      setLoading(false);
-    };
-    fetchHotels();
-  }, [refresh]);
+    setHotels(response.data);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    if (hotels) {
-      setRefresh(false);
+    if (hotelsInput.length == 0) {
+      console.log('fetiching hotels...');
+
+      fetchHotels();
     } else {
-      setRefresh(true);
+      setHotels(hotelsInput);
+      setLoading(false);
     }
   }, [hotels]);
 

@@ -5,6 +5,7 @@ import { TouchableRipple } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
 import AdminNavigator from '../screens/admin/AdminNavigator';
+import ExploreNavigator from '../screens/explore/ExploreNavigator';
 import ExploreScreen from '../screens/explore/ExploreScreen';
 import profileScreen from '../screens/profile/ProfileScreen';
 import ReservationsScreen from '../screens/reservations/ReservationsScreen';
@@ -51,7 +52,7 @@ const Tabs = () => {
       })}>
       <Tab.Screen
         name="Explore"
-        component={ExploreScreen}
+        component={ExploreNavigator}
         options={{ headerShown: false }}
       />
       <Tab.Screen

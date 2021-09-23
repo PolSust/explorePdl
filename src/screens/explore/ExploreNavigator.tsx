@@ -1,23 +1,23 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import HotelForm from './HotelForm';
+import ExploreScreen from './ExploreScreen';
 import HotelListScreen from '../common/HotelListScreen';
 
 const AdminNavigator = () => {
   const Stack = createStackNavigator();
 
   return (
-    <Stack.Navigator initialRouteName="AdminScreen">
+    <Stack.Navigator initialRouteName="ExploreScreen">
       <Stack.Screen
-        name="AdminScreen"
-        options={{ title: 'Espace Admin' }}
-        component={HotelListScreen}
-        initialParams={{ query: '', hotels: [] }}
+        options={{ headerShown: false }}
+        name="ExploreScreen"
+        component={ExploreScreen}
       />
+
       <Stack.Screen
-        name="HotelForm"
-        options={{ title: "Formulaire d'Hotel" }}
-        component={HotelForm}
+        name="HotelListScreen"
+        options={{ title: 'Liste des Hotels' }}
+        component={HotelListScreen}
       />
     </Stack.Navigator>
   );

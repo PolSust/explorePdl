@@ -59,6 +59,7 @@ const CityAutocompletion: FC<AutocompletionProps> = ({
 
   return (
     <AutocompletionBase
+      bgColor="bg-gray-200"
       data={villes}
       renderItem={(item) => AutocompletionItem(item, onAutocompletionItemPress)}
     />

@@ -52,6 +52,7 @@ const DepartmentAutocompletion: FC<AutocompletionProps> = ({
 
   return (
     <AutocompletionBase
+      bgColor="bg-gray-200"
       data={departments}
       renderItem={(item) => AutocompletionItem(item, onAutocompletionItemPress)}
     />

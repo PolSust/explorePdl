@@ -6,12 +6,28 @@ import uuid from 'react-native-uuid';
 interface Props {
   data: readonly any[];
   renderItem: ListRenderItem<any> | null | undefined;
+  /**
+   * In tailwind
+   */
+  bgColor: string;
+  rounded?: boolean;
+  relative1?: boolean;
 }
 
-const AutocompletionBase: FC<Props> = ({ data, renderItem }) => {
+const AutocompletionBase: FC<Props> = ({
+  data,
+  renderItem,
+  bgColor,
+  rounded = false,
+  relative1 = false,
+}) => {
+  let roundedClass = rounded ? 'rounded-xl' : '';
+  let relativeClass = relative1 ? 'bottom-1' : '';
+  let colorClass = data.length > 0 ? bgColor : '';
+
   return (
     <FlatList
-      style={tw`pb-3 bg-gray-200 `}
+      style={tw`pb-3 relative ${relativeClass} ${colorClass} ${roundedClass}`}
       data={data}
       renderItem={renderItem}
       keyExtractor={() => uuid.v4().toString()}

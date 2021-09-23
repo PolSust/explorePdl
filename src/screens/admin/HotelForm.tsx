@@ -19,8 +19,11 @@ const HotelForm = ({ route, navigation }) => {
   console.log('input', hotelInput);
 
   // If the hotelProp is undefined it means we are creating a new hotel
+  type mode = 'create' | 'edit';
+  let mode: mode = 'edit';
   if (!hotelInput) {
     hotelInput = createUndefinedHotel();
+    mode = 'create';
   }
   const [hotel, setHotel] = useState<Hotel>(hotelInput);
   const [departmentFilled, setDepartmentFilled] = useState<boolean>(
@@ -68,9 +71,14 @@ const HotelForm = ({ route, navigation }) => {
       )
       .then((response) => {
         if (response.status === 200) {
+          let msg =
+            mode === 'create'
+              ? "L'hôtel a bien été créé"
+              : "L'hôtel a bien été modifié";
+
           setButtonLoading(false);
           setSnackbarMessage({
-            inputMessage: 'Hotel ajouté avec success !',
+            inputMessage: `${msg} !`,
             mode: 'success',
             setSnackbarMessage,
           });
@@ -195,7 +203,7 @@ const HotelForm = ({ route, navigation }) => {
             style={tw`w-1/2 mb-8`}
             icon="add"
             mode="contained">
-            Ajouter
+            {mode === 'edit' ? 'Modifier' : 'Ajouter'}
           </Button>
         </View>
       </View>

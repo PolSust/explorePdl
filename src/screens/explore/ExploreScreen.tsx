@@ -1,10 +1,11 @@
 import React from 'react';
-import {Image, ImageBackground, View} from 'react-native';
+import { Image, ImageBackground, View } from 'react-native';
 
 import tw from 'tailwind-react-native-classnames';
 import SearchHotels from '../../components/SearchHotels';
+import Hotel from '../../interfaces/Hotel';
 
-const ExploreScreen = () => {
+const ExploreScreen = ({ route, navigation }) => {
   return (
     <ImageBackground
       source={require('../../assets/images/homeBg.png')}
@@ -15,7 +16,11 @@ const ExploreScreen = () => {
           style={tw`w-full h-32 mb-5`}
           source={require('../../assets/images/Explore_logo_medium.png')}
         />
-        <SearchHotels />
+        <SearchHotels
+          itemSelectCallback={(hotels: Hotel[], query) => {
+            navigation.navigate('HotelListScreen', { hotels, query });
+          }}
+        />
       </View>
     </ImageBackground>
   );
