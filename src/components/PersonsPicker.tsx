@@ -9,9 +9,9 @@ interface Props {
   callback: (amount: number) => void;
 }
 
-const PersonsPicker = ({ extraStyles, callback: callBack }: Props) => {
-  const [amount, setAmount] = useState(0);
-  const limit = 5;
+const PersonsPicker = ({ extraStyles, callback }: Props) => {
+  const [amount, setAmount] = useState(1);
+  const limit = 6;
 
   const increment = () => {
     if (amount == limit) return;
@@ -19,12 +19,12 @@ const PersonsPicker = ({ extraStyles, callback: callBack }: Props) => {
   };
 
   const decrement = () => {
-    if (amount == 0) return;
+    if (amount == 1) return;
     setAmount((oldAmount) => oldAmount - 1);
   };
 
   useEffect(() => {
-    callBack(amount);
+    callback(amount);
   }, [amount]);
 
   return (
@@ -35,10 +35,10 @@ const PersonsPicker = ({ extraStyles, callback: callBack }: Props) => {
       ]}>
       <Text style={s.text}>Pour {amount} Personnes</Text>
       <TouchableRipple
-        style={tw`px-4 py-2`}
+        style={tw`px-4 py-2 ml-2`}
         onPress={decrement}
-        disabled={amount == 0}>
-        <Icon name="remove" color={amount == 0 ? '#000' : '#69A2B0'} />
+        disabled={amount == 1}>
+        <Icon name="remove" color={amount == 1 ? '#000' : '#69A2B0'} />
       </TouchableRipple>
 
       <TouchableRipple

@@ -27,7 +27,7 @@ const AutocompletionBase: FC<Props> = ({
 
   return (
     <FlatList
-      style={tw`pb-3 relative ${relativeClass} ${colorClass} ${roundedClass}`}
+      style={tw`pb-3 relative z-40 shadow-lg ${relativeClass} ${colorClass} ${roundedClass}`}
       data={data}
       renderItem={renderItem}
       keyExtractor={() => uuid.v4().toString()}

@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
-import HotelsList from '../../components/HotelsList';
-import SearchHotels from '../../components/SearchHotels';
-import Hotel from '../../interfaces/Hotel';
+import HotelsList from '../../../components/HotelsList';
+import SearchHotels from '../../../components/SearchHotels';
+import Hotel from '../../../interfaces/Hotel';
 
 interface Props {
   /**
@@ -36,7 +36,7 @@ const HotelListScreen = ({ route, navigation }: Props) => {
         <Button
           style={tw`max-h-14`}
           mode="contained"
-          onPress={() => navigation.navigate('HotelReservation')}>
+          onPress={() => navigation.navigate('HotelForm')}>
           <Icon name={'add-circle'} size={30} />
         </Button>
       </View>

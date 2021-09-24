@@ -1,13 +1,13 @@
 export default interface Reservation {
   id?: string | number;
-  entrydate: Date;
-  exitdate: Date;
+  entrydate: Date | undefined;
+  exitdate: Date | undefined;
   /**
    * Amount of people in the reservation
    */
-  people: number;
+  people: number | undefined;
   /**
    * foreign key
    */
-  id_hotel: string;
+  id_hotel: string | number | undefined;
 }

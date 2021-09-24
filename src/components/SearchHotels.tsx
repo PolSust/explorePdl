@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Searchbar, Text, TouchableRipple } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import Hotel from '../interfaces/Hotel';
@@ -36,26 +36,25 @@ const SearchHotels = ({
     }
   }, [query]);
 
-  // useEffect(() => {
-  //   setQuery(defaultValue);
-  // }, [defaultValue]);
-
   const onQueryChange = async (text: string) => {
     setQuery(text);
 
-    let result = await axios.post(
-      'https://cefii-developpements.fr/pol1149/explorePdlServer/index.php',
-      { search: text },
-      {
-        params: {
-          entity: 'hotel',
-          action: 'search',
+    let result = await axios
+      .post(
+        'https://cefii-developpements.fr/pol1149/explorePdlServer/index.php',
+        { search: text },
+        {
+          params: {
+            entity: 'hotel',
+            action: 'search',
+          },
         },
-      },
-    );
+      )
+      .catch((err) => {
+        console.error(err);
+      });
 
-    setResults(result.data);
-    console.log(results);
+    setResults(result?.data);
   };
 
   const AutocompletionItem = ({ item }: any) => (
@@ -87,7 +86,7 @@ const SearchHotels = ({
   };
 
   return (
-    <>
+    <View style={tw`absolute w-full`}>
       <Searchbar
         placeholder={'Département, ville...'}
         value={query}
@@ -104,7 +103,7 @@ const SearchHotels = ({
           renderItem={(item) => AutocompletionItem(item)}
         />
       )}
-    </>
+    </View>
   );
 };
 

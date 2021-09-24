@@ -16,10 +16,12 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setLoading(true);
     setHotels(hotelsInput);
   }, [hotelsInput]);
 
   const fetchHotels = async () => {
+    console.log('fetiching hotels...');
     const response = await axios.get(
       'https://cefii-developpements.fr/pol1149/explorePdlServer',
       {
@@ -29,19 +31,20 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
         },
       },
     );
+    console.log('hotels fetched', response.data);
 
     setHotels(response.data);
     setLoading(false);
   };
 
   useEffect(() => {
-    if (hotelsInput.length == 0) {
-      console.log('fetiching hotels...');
-
-      fetchHotels();
-    } else {
-      setHotels(hotelsInput);
-      setLoading(false);
+    if (loading) {
+      if (hotelsInput.length == 0) {
+        fetchHotels();
+      } else {
+        setHotels(hotelsInput);
+        setLoading(false);
+      }
     }
   }, [hotels]);
 
@@ -52,7 +55,7 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
           <RefreshControl
             refreshing={loading}
             onRefresh={() => {
-              setHotels(undefined);
+              fetchHotels();
             }}
             tintColor="#69A2B0"
           />

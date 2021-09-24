@@ -2,16 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import { Button, TextInput, Title } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
-import CategorySelector from '../../components/CategorySelector';
-import CityAutocompletion from '../../components/CityAutocompletion';
-import DepartmentAutocompletion from '../../components/DepartmentAutocompletion';
-import StarPicker from '../../components/StarPicker';
-import Hotel from '../../interfaces/Hotel';
-import ImageChoiceModal from '../../components/ImageChoiceModal';
+import CategorySelector from '../../../components/CategorySelector';
+import CityAutocompletion from '../../../components/CityAutocompletion';
+import DepartmentAutocompletion from '../../../components/DepartmentAutocompletion';
+import StarPicker from '../../../components/StarPicker';
+import Hotel from '../../../interfaces/Hotel';
+import ImageChoiceModal from '../../../components/ImageChoiceModal';
 import axios from 'axios';
-import SnackbarMessageProps from '../../interfaces/SnackbarMessageProps';
-import SnackbarMessageContext from '../../context/SnackbarMessageContext';
-import SnackbarMessageContextInterface from '../../interfaces/SnackbarMessageContext';
+import SnackbarMessageProps from '../../../interfaces/SnackbarMessageProps';
+import SnackbarMessageContext from '../../../context/SnackbarMessageContext';
+import SnackbarMessageContextInterface from '../../../interfaces/SnackbarMessageContext';
 import { useNavigation } from '@react-navigation/core';
 
 const HotelForm = ({ route, navigation }) => {
@@ -19,13 +19,15 @@ const HotelForm = ({ route, navigation }) => {
   console.log('input', hotelInput);
 
   // If the hotelProp is undefined it means we are creating a new hotel
-  type mode = 'create' | 'edit';
-  let mode: mode = 'edit';
+  type Mode = 'create' | 'edit';
+  let mode: Mode = 'edit';
+
   if (!hotelInput) {
     hotelInput = createUndefinedHotel();
     mode = 'create';
   }
   const [hotel, setHotel] = useState<Hotel>(hotelInput);
+
   const [departmentFilled, setDepartmentFilled] = useState<boolean>(
     !hotel.department ? false : true,
   );
@@ -58,6 +60,13 @@ const HotelForm = ({ route, navigation }) => {
 
   const formSubmit = () => {
     setButtonLoading(true);
+    let action: string;
+    if (mode == 'create') {
+      action = 'create';
+    } else {
+      action = 'update';
+    }
+
     axios
       .post(
         'https://cefii-developpements.fr/pol1149/explorePdlServer/index.php',
@@ -65,7 +74,7 @@ const HotelForm = ({ route, navigation }) => {
         {
           params: {
             entity: 'hotel',
-            action: 'create',
+            action: action,
           },
         },
       )
