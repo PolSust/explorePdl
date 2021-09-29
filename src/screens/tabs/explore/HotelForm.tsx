@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/core';
 
 const HotelForm = ({ route, navigation }) => {
   let hotelInput: Hotel = route.params;
-  console.log('input', hotelInput);
+  // console.log('input', hotelInput);
 
   // If the hotelProp is undefined it means we are creating a new hotel
   type Mode = 'create' | 'edit';

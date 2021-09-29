@@ -27,6 +27,8 @@ const AutocompletionBase: FC<Props> = ({
 
   return (
     <FlatList
+      keyboardShouldPersistTaps="always"
+      keyboardDismissMode="interactive"
       style={tw`pb-3 relative z-40 shadow-lg ${relativeClass} ${colorClass} ${roundedClass}`}
       data={data}
       renderItem={renderItem}

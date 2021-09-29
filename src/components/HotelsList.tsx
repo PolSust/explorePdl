@@ -21,7 +21,7 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
   }, [hotelsInput]);
 
   const fetchHotels = async () => {
-    console.log('fetiching hotels...');
+    // console.log('fetiching hotels...');
     const response = await axios.get(
       'https://cefii-developpements.fr/pol1149/explorePdlServer',
       {
@@ -31,7 +31,7 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
         },
       },
     );
-    console.log('hotels fetched', response.data);
+    // console.log('hotels fetched', response.data);
 
     setHotels(response.data);
     setLoading(false);
@@ -49,7 +49,7 @@ const HotelsList = ({ navigation, hotelsInput }: Props) => {
   }, [hotels]);
 
   return (
-    <SafeAreaView style={tw`mb-40`}>
+    <SafeAreaView style={tw`mb-40 w-full`}>
       <ScrollView
         refreshControl={
           <RefreshControl

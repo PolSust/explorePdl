@@ -35,8 +35,8 @@ const CityAutocompletion: FC<AutocompletionProps> = ({
           b.population - a.population,
       );
 
-      console.log(response.data);
-      console.log(codeDepartment);
+      // console.log(response.data);
+      // console.log(codeDepartment);
 
       setVilles(response.data);
     };

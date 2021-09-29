@@ -5,8 +5,13 @@ import SnackbarMessageContext from './context/SnackbarMessageContext';
 import SnackbarMessageContextInterface from './interfaces/SnackbarMessageContext';
 import 'react-native-url-polyfill/auto';
 import Auth from './screens/auth/Auth';
-import User from './interfaces/User';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import UserContext from './context/UserContext';
+import UserContextInterface from './interfaces/UserContextInterface';
+import User from './interfaces/User';
+import { View } from 'react-native';
+import tw from 'tailwind-react-native-classnames';
+import { ActivityIndicator } from 'react-native-paper';
 
 const App = () => {
   const [snackbarMessage, setSnackbarMessage] =
@@ -16,46 +21,83 @@ const App = () => {
       setSnackbarMessage: () => {},
     });
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [isLogged, setIsLogged] = useState<boolean>();
-  const user = useContext({});
+  const [user, setUser] = useState<UserContextInterface>({
+    email: '',
+    password: '',
+    username: '',
+    isAdmin: false,
+    setUserContext: () => {},
+  });
 
   useEffect(() => {
-    //has to update when user logs
     // AsyncStorage.removeItem('user');
     AsyncStorage.getItem('user')
       .then((storageUser) => {
         if (storageUser) {
           setIsLogged(true);
-          return createContext<User>(JSON.parse(storageUser));
+
+          setUser(JSON.parse(storageUser));
         } else {
           setIsLogged(false);
         }
+        setLoading(false);
       })
       .catch((error) => {
         setIsLogged(false);
+        setLoading(false);
       });
+  }, []);
+
+  useEffect(() => {
+    if (user.id) {
+      setIsLogged(true);
+    } else {
+      setIsLogged(false);
+    }
   }, [user]);
 
+  if (loading) {
+    return (
+      <View style={tw`flex h-full justify-center items-center`}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
   return (
-    <SnackbarMessageContext.Provider
+    <UserContext.Provider
       value={{
-        inputMessage: snackbarMessage.inputMessage,
-        mode: snackbarMessage.mode,
-        setSnackbarMessage,
+        id: user.id,
+        email: user.email,
+        password: user.password,
+        username: user.username,
+        isAdmin: user.isAdmin,
+        setUserContext(userInput) {
+          setUser(userInput);
+        },
       }}>
-      {isLogged ? <Tabs /> : <Auth />}
-      <SnackbarMessage
-        inputMessage={snackbarMessage.inputMessage}
-        mode={snackbarMessage.mode}
-        dismissCallback={() => {
-          snackbarMessage.setSnackbarMessage({
-            inputMessage: '',
-            mode: 'error',
-            setSnackbarMessage,
-          });
-        }}
-      />
-    </SnackbarMessageContext.Provider>
+      <SnackbarMessageContext.Provider
+        value={{
+          inputMessage: snackbarMessage.inputMessage,
+          mode: snackbarMessage.mode,
+          setSnackbarMessage,
+        }}>
+        {isLogged ? <Tabs /> : <Auth />}
+        <SnackbarMessage
+          inputMessage={snackbarMessage.inputMessage}
+          mode={snackbarMessage.mode}
+          dismissCallback={() => {
+            setSnackbarMessage({
+              inputMessage: '',
+              mode: 'error',
+              setSnackbarMessage,
+            });
+          }}
+        />
+      </SnackbarMessageContext.Provider>
+    </UserContext.Provider>
   );
 };
 

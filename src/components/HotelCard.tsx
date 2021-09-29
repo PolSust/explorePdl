@@ -13,6 +13,7 @@ import {
 } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import SnackbarMessageContext from '../context/SnackbarMessageContext';
+import UserContext from '../context/UserContext';
 import Hotel from '../interfaces/Hotel';
 import SnackbarMessageContextInterface from '../interfaces/SnackbarMessageContext';
 import ConfirmModal from './ConfirmModal';
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
+  const user = useContext(UserContext);
+
   const [confirmQuestion, setConfirmQuestion] = useState('');
 
   const { setSnackbarMessage } = useContext<SnackbarMessageContextInterface>(
@@ -88,22 +91,24 @@ const HotelCard = ({ hotel, navigation, deleteCallback }: Props) => {
             <Text>...</Text>
           )}
         </Paragraph>
-        <View style={tw`w-2/12 flex items-center justify-center`}>
-          <IconButton
-            icon="pencil"
-            color={Colors.black}
-            size={30}
-            onPress={() => navigation.navigate('HotelForm', hotel)}
-          />
-          <IconButton
-            icon="trash"
-            color={Colors.red300}
-            size={30}
-            onPress={() => {
-              setConfirmQuestion('Voulez Vous Supprimer cette Hotel');
-            }}
-          />
-        </View>
+        {user.isAdmin == true && (
+          <View style={tw`w-2/12 flex items-center justify-center`}>
+            <IconButton
+              icon="pencil"
+              color={Colors.black}
+              size={30}
+              onPress={() => navigation.navigate('HotelForm', hotel)}
+            />
+            <IconButton
+              icon="trash"
+              color={Colors.red300}
+              size={30}
+              onPress={() => {
+                setConfirmQuestion('Voulez Vous Supprimer cette Hotel');
+              }}
+            />
+          </View>
+        )}
       </Card.Content>
       <Button
         onPress={() => navigation.navigate('HotelReservation', hotel)}

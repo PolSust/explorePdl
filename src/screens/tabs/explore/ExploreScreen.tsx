@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, ImageBackground, View } from 'react-native';
 
 import tw from 'tailwind-react-native-classnames';
 import SearchHotels from '../../../components/SearchHotels';
+import UserContext from '../../../context/UserContext';
 import Hotel from '../../../interfaces/Hotel';
 
 const ExploreScreen = ({ route, navigation }) => {
+  const user = useContext(UserContext);
+
   return (
     <ImageBackground
       source={require('../../../assets/images/homeBg.png')}

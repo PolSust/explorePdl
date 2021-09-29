@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { Text, View } from 'react-native';
 import { Button } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Ionicons';
 import tw from 'tailwind-react-native-classnames';
 import HotelsList from '../../../components/HotelsList';
 import SearchHotels from '../../../components/SearchHotels';
+import UserContext from '../../../context/UserContext';
 import Hotel from '../../../interfaces/Hotel';
 
 interface Props {
@@ -18,10 +20,12 @@ interface Props {
 const HotelListScreen = ({ route, navigation }: Props) => {
   const [hotelsInput, setHotelsInput] = useState<Hotel[]>(route.params.hotels);
 
+  const user = useContext(UserContext);
+
   return (
-    <View style={tw`flex items-center w-full`}>
-      <View style={tw`flex flex-row w-11/12 mt-4 mb-3 justify-between`}>
-        <View style={tw`w-9/12`}>
+    <SafeAreaView style={tw`flex items-center w-full`}>
+      <View style={tw`flex flex-row w-11/12 mt-4 justify-between`}>
+        <View style={tw`flex-grow mb-5 h-10`}>
           <SearchHotels
             defaultValue={route.params.query}
             queryEmptyCallback={() => {
@@ -33,15 +37,19 @@ const HotelListScreen = ({ route, navigation }: Props) => {
             inputStyle={tw`text-sm`}
           />
         </View>
-        <Button
-          style={tw`max-h-14`}
-          mode="contained"
-          onPress={() => navigation.navigate('HotelForm')}>
-          <Icon name={'add-circle'} size={30} />
-        </Button>
+        {user.isAdmin == true && (
+          <View style={tw`flex-grow-0 ml-2`}>
+            <Button
+              mode="contained"
+              onPress={() => navigation.navigate('HotelForm')}>
+              <Icon name={'add-circle'} size={30} />
+            </Button>
+          </View>
+        )}
       </View>
+
       <HotelsList hotelsInput={hotelsInput} navigation={navigation} />
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import { Portal, Button, Provider, Dialog } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
@@ -26,10 +27,11 @@ const ConfirmModal = ({ callback, question }: props) => {
       <Provider>
         <Portal>
           <Dialog
-            style={tw`flex items-center`}
+            style={tw`flex items-center z-50`}
             visible={visible}
             onDismiss={() => {
               setVisible(false);
+              callback(false);
             }}>
             <Dialog.Title>{question} ?</Dialog.Title>
             <Dialog.Actions>

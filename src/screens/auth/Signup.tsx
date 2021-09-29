@@ -12,6 +12,7 @@ import {
 } from 'react-native-paper';
 import tw from 'tailwind-react-native-classnames';
 import SnackbarMessageContext from '../../context/SnackbarMessageContext';
+import UserContext from '../../context/UserContext';
 import SnackbarMessageContextInterface from '../../interfaces/SnackbarMessageContext';
 import User from '../../interfaces/User';
 
@@ -26,6 +27,7 @@ const Signup = ({ route, navigation }) => {
     username: '',
     isAdmin: false,
   });
+  const { setUserContext } = useContext(UserContext);
 
   useEffect(() => {
     let isFormValid = true;
@@ -36,7 +38,7 @@ const Signup = ({ route, navigation }) => {
       }
     }
     setFormValid(isFormValid);
-    console.log(user);
+    // console.log(user);
   }, [user]);
 
   const formSubmit = async () => {
@@ -52,7 +54,7 @@ const Signup = ({ route, navigation }) => {
         },
       )
       .then(async (result) => {
-        console.log(result.data);
+        // console.log(result.data);
 
         let tempUser: User = {
           email: user.email,
@@ -63,9 +65,7 @@ const Signup = ({ route, navigation }) => {
         };
 
         AsyncStorage.setItem('user', JSON.stringify(tempUser));
-
-        let item = await AsyncStorage.getItem('user');
-        console.log(item);
+        setUserContext({ ...tempUser, setUserContext });
 
         setSnackbarMessage({
           inputMessage: 'Votre compte a bien été créé',
@@ -85,9 +85,11 @@ const Signup = ({ route, navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="position">
+    <KeyboardAvoidingView
+      style={tw`justify-center flex h-full`}
+      behavior="height">
       <Image
-        style={tw`w-full mt-32 h-32 mb-5`}
+        style={tw`w-full h-32 mb-5`}
         source={require('../../assets/images/Explore_logo_medium.png')}
       />
       <Card style={tw`rounded-xl w-11/12 m-auto p-5`}>
@@ -114,8 +116,20 @@ const Signup = ({ route, navigation }) => {
           style={tw`my-3`}
           onChangeText={(text) => setUser({ ...user, password: text })}
         />
-        <Button disabled={!formValid} style={tw`p-5`} onPress={formSubmit}>
+        <Button
+          mode="contained"
+          style={tw`p-1 mt-5`}
+          disabled={!formValid}
+          onPress={formSubmit}>
           Créer mon compte
+        </Button>
+        <Button
+          style={tw`p-5`}
+          color="#3786b8"
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
+          ou se connecter
         </Button>
       </Card>
     </KeyboardAvoidingView>

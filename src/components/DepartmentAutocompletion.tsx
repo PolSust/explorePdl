@@ -29,7 +29,7 @@ const DepartmentAutocompletion: FC<AutocompletionProps> = ({
       );
 
       if (query.length == 0) filteredDepartments = [];
-      console.log(filteredDepartments);
+      // console.log(filteredDepartments);
 
       setDepartments(filteredDepartments);
     };

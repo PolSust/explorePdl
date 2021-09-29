@@ -10,4 +10,8 @@ export default interface Reservation {
    * foreign key
    */
   id_hotel: string | number | undefined;
+  /**
+   * foreign key
+   */
+  id_user: string | number | undefined;
 }

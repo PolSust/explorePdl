@@ -33,7 +33,10 @@ const PersonsPicker = ({ extraStyles, callback }: Props) => {
         tw`flex items-center flex-row border border-black py-1 px-3 rounded`,
         extraStyles,
       ]}>
-      <Text style={s.text}>Pour {amount} Personnes</Text>
+      <Text style={s.text}>
+        Pour {amount}{' '}
+        {amount > 1 ? <Text>personnes</Text> : <Text>personne</Text>}
+      </Text>
       <TouchableRipple
         style={tw`px-4 py-2 ml-2`}
         onPress={decrement}
